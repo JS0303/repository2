@@ -5,6 +5,7 @@
 <%@ page import="java.util.List"  %>
 
 <%@ page import="com.model2.mvc.service.domain.Product" %>
+<%@ page import="com.model2.mvc.service.domain.User" %>
 <%@ page import="com.model2.mvc.common.Search" %>
 <%@ page import="com.model2.mvc.common.Page"%>
 <%@ page import="com.model2.mvc.common.util.CommonUtil"%>
@@ -21,6 +22,13 @@
 	
 	System.out.println(":: listProduct의 searchCondition :: "+searchCondition);
 	System.out.println(":: listProduct의 searchKeyword :: "+searchKeyword);
+	
+	User user = (User) session.getAttribute("user");
+	
+	String role = null;
+	if(user != null){
+		role = user.getRole();
+	}
 %>
 
 <html>
@@ -133,7 +141,11 @@
 		<td align="center"><%= i + 1 %></td>
 		<td></td>
 				<td align="left">
+				<%if (("user".equals(role) || role == null) && product.getProdTranCode()!= null){ %>
+						<%=product.getProdName()%>
+				<%}else{%>
 				<a href="/getProduct.do?prodNo=<%=product.getProdNo()%>&menu=<%= request.getParameter("menu")%>"><%=product.getProdName()%></a>
+				<%} %>
 				</td>
 		
 		<td></td>
@@ -141,12 +153,29 @@
 		<td></td>
 		<td align="left"><%=product.getRegDate() %></td>
 		<td></td>
-		<td align="left"></td>	
+		<% System.out.println("role :: "+role+", tranCode :: "+product.getProdTranCode()+", menu :: "+request.getParameter("menu")); %>
+		<% if(product.getProdTranCode() == null){ %>
+		<td align="left">판매중</td>	
+		<%}else{ %> <%
+			
+				if("001".equals(product.getProdTranCode())) {
+					if("manage".equals(request.getParameter("menu"))) {%>
+					<td align="left">구매완료<a href='updateTranCodeByProd.do?prodNo=<%=product.getProdNo() %>&tranCode=002'>배송하기</a></td>
+					<%} %>
+				<%}else if("002".equals(product.getProdTranCode())) { %>	
+					<td align="left">배송중</td>
+				<%}else if("003".equals(product.getProdTranCode())) { %>	
+					<td align="left">배송완료</td>
+				<%}else if("004".equals(product.getProdTranCode())) { %>	
+					<td align="left">재고없음</td>
+				<%} %>
+		
 	</tr>
 	<tr>
-	<% } %>	
 		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 	</tr>
+	<% } %>	
+	<% } %>	
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
