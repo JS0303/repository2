@@ -134,6 +134,7 @@ public class ProductDao {
 			product.setManuDate(rs.getString("manufacture_day"));
 			product.setPrice(rs.getInt("price"));
 			product.setFileName(rs.getString("image_file"));
+			product.setProdTranCode(rs.getString("TRAN_STATUS_CODE"));
 			list.add(product);
 		}
 		

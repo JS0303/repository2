@@ -47,6 +47,8 @@ public class ListProductAction extends Action {
 		request.setAttribute("resultPage", resultPage);
 		request.setAttribute("search", search);
 		
+		System.out.println("ListProduct의 map :: "+map);
+		
 		System.out.println(":: ListProductAction :: productList의 page수를 정해서 listProduct.jsp로 보낸다");
 		return "forward:/product/listProduct.jsp";
 	}

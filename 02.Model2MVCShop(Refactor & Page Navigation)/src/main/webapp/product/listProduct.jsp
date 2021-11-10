@@ -157,9 +157,11 @@
 		<% if(product.getProdTranCode() == null){ %>
 		<td align="left">판매중</td>	
 		<%}else{ %> <%
-			
+					
 				if("001".equals(product.getProdTranCode())) {
+					
 					if("manage".equals(request.getParameter("menu"))) {%>
+					
 					<td align="left">구매완료<a href='updateTranCodeByProd.do?prodNo=<%=product.getProdNo() %>&tranCode=002'>배송하기</a></td>
 					<%} %>
 				<%}else if("002".equals(product.getProdTranCode())) { %>	
